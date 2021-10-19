@@ -18,8 +18,8 @@ class CreateDiscountsTable extends Migration
             $table->string('information');
             $table->date('start_time');
             $table->date('end_time');
-            $table->string('category_discount');
-            $table->string('discount_method');
+            $table->integer('category_discount');
+            $table->integer('discount_method');
             $table->integer('discount_value');
             $table->softDeletes();
             $table->timestamps();

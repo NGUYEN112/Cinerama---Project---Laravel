@@ -4,19 +4,23 @@ namespace App\Http\Controllers\clients;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\FilmsRepository;
+use App\Repositories\Contracts\RemarkablesRepository;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
 {   
     protected $filmRepository;
 
-    public function __construct(FilmsRepository $filmRepository ) 
+    public function __construct(
+        FilmsRepository         $filmsRepository,
+    ) 
     {
-        $this->filmRepository = $filmRepository;
+        $this->filmRepository = $filmsRepository;
     }
     //List Film Page start
     public function clientFilmPage() {
-        return view('clients.list-film');
+        $publisheds = $this->filmRepository->getPublishedFilm();
+        return view('clients.list-film',compact('publisheds'));
     }
 
     //List Film Page end

@@ -10,6 +10,10 @@ class RoomsEloquentRepository implements RoomsRepository {
     {
         return Room::all();
     }
+    public function getRoomOfCinema($cinema_id)
+    {
+        return Room::where('cinema_id',$cinema_id)->get();
+    }
 
     public function get($id)
     {

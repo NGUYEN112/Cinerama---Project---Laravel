@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>@yield('title')</title>
 </head>
 <link rel="stylesheet" href="{{asset('/storage/styles/client-layout.css')}}">
+
+@yield('client-style')
 <!-- MDB -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
@@ -40,33 +42,33 @@
                         <div class="container-fluid">
                             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div class="navbar-nav">
-                                    <a class="nav-link active head__space head__font" aria-current="page">TRANG CHỦ</a>
-                                    <a href="{{route('client.films')}}" class="nav-link head__space head__font ">SUẤT CHIẾU</a>
-                                    <a class="nav-link head__space head__font" data-mdb-toggle="modal" data-mdb-target="#orderModal">ĐẶT VÉ</a>
+                                    <a href="/" class="nav-link active head__space head__font" aria-current="page">TRANG CHỦ</a>
+                                    <a href="{{route('client.films')}}" class="nav-link head__space head__font ">DANH SÁCH PHIM</a>
+                                    <a class="order-ticket nav-link head__space head__font" data-mdb-toggle="modal" data-mdb-target="#orderModal">ĐẶT VÉ</a>
                                 </div>
                             </div>
                         </div>
                     </nav>
                 </div>
                 <div class="col-md-2 head__display">
-                    @if (isset(Auth::user()->name))
-                    @if(Auth::user()->level == 1)
+                    @if (auth()->user() != null)
+                    @if(auth()->user()->role_id == null)
                     <div class="dropdown nav-link head__font  head__margin">
                         <a class="btn  login-button dropdown-toggle" type="button" id="dropdownMenuButton" data-mdb-toggle="dropdown" aria-expanded="false">
                             Nguyên
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="auth/logout">Đăng xuất</a></li>
                         </ul>
                     </div>
                     @else
-                    <a class="dropdown-item" href=""> Đăng xuất</a>
-                    @endif
-                    @endif
-                    @if (empty(auth()->user()->name))
-                    <a href="/auth/login" class="btn nav-link head__font  head__margin login-button">ĐĂNG NHẬP</a>
+                    <!-- <a class="dropdown-item" href=""> Đăng xuất</a> -->
+                    <a href="auth/logout" class="btn nav-link head__font  head__margin login-button">ĐĂNG XUẤT</a>
 
+                    @endif
+                    @else
+                    <a href="/auth/login" class="btn nav-link head__font  head__margin login-button">ĐĂNG NHẬP</a>
                     @endif
 
                     <!-- <ng-container *ngIf="check_auth == true; else existUser">
@@ -102,19 +104,14 @@
 
                                             <div class="order-ticket">
                                                 <h3 class="ticket-order__font-nav">Rạp phim</h3>
-                                                <select class="ticket-order__border" (change)="getCinema_id($event.target.value)">
-                                                    <option checked>Vui lòng chọn rạp phim</option>
-                                                    <option value="">
-                                                    </option>
+                                                <select class="ticket-order__border cinema-select">
                                                 </select>
                                             </div>
 
                                             <div class="order-ticket">
                                                 <h3 class="ticket-order__font-nav">PHIM</h3>
-                                                <select class="ticket-order__border" (change)="loadScreeningDate($event.target.value)" (change)="loadFilmDetail($event.target.value)">
-                                                    <option checked>Vui lòng chọn phim</option>
-                                                    <option value="">
-                                                    </option>
+                                                <select class="ticket-order__border film-select">
+                                                    <option>Vui lòng chọn phim</option>
                                                 </select>
                                             </div>
 
@@ -122,10 +119,8 @@
 
                                             <div class="order-ticket">
                                                 <h3 class="ticket-order__font-nav">BẮP NƯỚC</h3>
-                                                <select class="ticket-order__border" (change)="getProductDetail($event.target.value)">
-                                                    <option checked>Vui lòng chọn combo</option>
-                                                    <option value="">
-                                                    </option>
+                                                <select class="ticket-order__border combo-select">
+
                                                 </select>
                                             </div>
                                             <!-- <div class="date">
@@ -134,20 +129,19 @@
                                             </div> -->
 
                                             <h3 class="ticket-order__font-nav">NGÀY</h3>
-                                            <select class="ticket-order__border" (change)="loadStartTime($event.target.value)">
-                                                <option checked>Vui lòng chọn Ngày chiếu</option>
-                                                <option value="">
-                                                </option>
+                                            <select class="ticket-order__border date-select">
+                                                <option>Vui lòng chọn ngày</option>
+
                                             </select>
 
                                             <h3 class="ticket-order__font-nav">GIỜ CHIẾU</h3>
-                                            <div class="time">
-                                                <button (click)="loadRoom(start_time.start_time)" class="btn btn-outline-dark btn-rounded  btn-sm ticket-order__space ticket-order__screen-bottom" data-mdb-ripple-color="dark"></button>
+                                            <div class="time time-choose">
+                                                <!-- <button  class="btn btn-outline-dark btn-rounded  btn-sm ticket-order__space ticket-order__screen-bottom" data-mdb-ripple-color="dark"></button> -->
                                             </div>
 
                                             <h3 class="ticket-order__font-nav">PHÒNG CHIẾU</h3>
-                                            <div class="time">
-                                                <button *ngFor="let room of rooms" (click)="loadScreeningId(room.room_id)" class="btn btn-outline btn-rounded btn-sm ticket-order__space" data-mdb-ripple-color="dark" data-mdb-slide="next" data-mdb-target="#carouselExampleControlsOrder"></button>
+                                            <div class="time room-choose">
+                                                <!-- <button *ngFor="let room of rooms" (click)="loadScreeningId(room.room_id)" class="btn btn-outline btn-rounded btn-sm ticket-order__space" data-mdb-ripple-color="dark" data-mdb-slide="next" data-mdb-target="#carouselExampleControlsOrder"></button> -->
                                             </div>
 
                                             <button type="button" class="btn btn-outline-warning btn-rounded btn-sm ticket-order__space-top " data-mdb-slide="next" data-mdb-target="#carouselExampleControlsOrder" data-mdb-ripple-color="dark">NEXT</button>
@@ -233,21 +227,20 @@
                             <div class="col-md-4 ">
                                 <h5 class="modal-title ticket-order__font ">THÔNG TIN ĐẶT VÉ</h5>
                                 <h3 class="ticket-order__font-nav ">PHIM</h3>
-                                <h5 class="ticket-order__inf "></h5>
+                                <h5 class="ticket-order__inf ticket-film"></h5>
                                 <h3 class="ticket-order__font-nav ">NGÀY CHIẾU</h3>
-                                <h5 class="ticket-order__inf "></h5>
+                                <h5 class="ticket-order__inf ticket-date"></h5>
                                 <h3 class="ticket-order__font-nav ">GIỜ CHIẾU</h3>
-                                <h5 class="ticket-order__inf "></h5>
+                                <h5 class="ticket-order__inf ticket-time"></h5>
                                 <h3 class="ticket-order__font-nav ">SỐ GHẾ</h3>
-                                <h5 class="ticket-order__inf ">
-                                    <ng-container *ngFor="let seatt of seat"></ng-container>
+                                <h5 class="ticket-order__inf ticket-seat">
                                 </h5>
                                 <h3 class="ticket-order__font-nav ">BẮP NƯỚC ĐI KÈM</h3>
-                                <h5 class="ticket-order__inf "></h5>
+                                <h5 class="ticket-order__inf ticket-combo"></h5>
                                 <h3 class="ticket-order__font-nav ">GIÁ</h3>
-                                <h5 class="ticket-order__inf "> Vnd</h5>
-                                <h3 class="ticket-order__font-nav ">SỐ LƯỢNG VÉ: </h3>
-                                <h3 class="ticket-order__font-nav ">TỔNG TIỀN: Vnd</h3>
+                                <h5 class="ticket-order__inf ticket-price"> Vnd</h5>
+                                <h3 class="ticket-order__font-nav ticket-count">SỐ LƯỢNG VÉ: </h3>
+                                <h3 class="ticket-order__font-nav ticket-total">TỔNG TIỀN: Vnd</h3>
                                 <button class="btn btn-outline-warning" (click)="clearSeat()">Clear</button>
                                 <form [formGroup]="orderTicketForm" (ngSubmit)="save()">
                                     <input class="ticket-order__inf name" formControlName="film_id" hidden>
@@ -274,8 +267,8 @@
 
         <!-- Footer Start -->
         <footer class="footer container footer__height head__border footer__bottom">
-            <div class="row">
-                <div class="col-3">
+            <div class="row ">
+                <div class="cln-3 cln-lg-6">
                     <h2 class="footer__tittle">MENU</h2>
                     <p class="footer__font">Home</p>
                     <p class="footer__font">Showtimes</p>
@@ -284,7 +277,7 @@
                     <i class="fab fa-facebook footer__social footer__space"></i>
                     <i class="fab fa-twitter footer__social"></i>
                 </div>
-                <div class="col-3">
+                <div class="cln-3 cln-lg-6">
                     <h2 class="footer__tittle">ADDRESS</h2>
                     <p class="footer__font">28 Nguyen Tri Phuong Street,</p>
                     <p class="footer__font">Phu Nhuan, Hue City</p>
@@ -292,7 +285,7 @@
                     <p class="footer__font"><i class="fas fa-phone-alt footer__social footer__space"></i>+0125.124789
                     </p>
                 </div>
-                <div class="col-6">
+                <div class="cln-6">
                     <h2 class="footer__tittle">CONTACT</h2>
                     <div class="form-outline mb-4 footer__border">
                         <input type="text" id="form4Example1" class="form-control" />
@@ -328,9 +321,12 @@
             </div>
         </div>
         <!-- Footer End -->
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="{{asset('/storage/js/client-js.js')}}"></script>
+        @yield('client-script')
 </body>
 
 </html>

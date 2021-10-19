@@ -88,8 +88,8 @@ class AdminFilmController extends Controller
         $attributes = [
             'film_name'   => $request->film_name,
             'global_name'      => $request->global_name,
-            'poster'   => $poster,
             'banner' => $banner,
+            'poster'   => $poster,
             'producer'   => $request->producer,
             'categories'      => $request->categories,
             'director'   => $request->director,

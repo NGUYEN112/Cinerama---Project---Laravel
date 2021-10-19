@@ -9,16 +9,16 @@ use DateTime;
 class FilmsEloquentRepository implements FilmsRepository {
     public function getAll()
     {
-        $nowdate = new DateTime('today');
+        // $nowdate = new DateTime('today');
         $films = Film::all();
         foreach($films as $film) {
-            if($film->release_date <= $nowdate && $film->status == 0 ) {
+            if($film->release_date <= now() && $film->status == 0 ) {
                 Film::where('id', $film->id)->update([
                     'status' => 1
                 ]);
             };
         }
-        return Film::all();
+        return Film::orderBy('status','desc')->get();
     }
 
     

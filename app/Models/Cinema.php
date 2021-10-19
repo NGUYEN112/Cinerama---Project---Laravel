@@ -13,4 +13,16 @@ class Cinema extends Model
         'address',
         'information'
     ];
+
+    public function room() {
+        return $this->hasMany('App\Models\Room');
+     }
+
+     public function screening() {
+        return $this->hasMany('App\Models\Screening');
+     }
+
+     public function user() {
+        return $this->hasMany('App\Models\User');
+     }
 }

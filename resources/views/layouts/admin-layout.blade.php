@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="{{asset('/storage/admin/admin_assets/css/custom.css')}}">
   <link rel="stylesheet" href="{{asset('/storage/admin/admin_assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('/storage/styles/manager-style.css')}}">
+  <link rel="stylesheet" href="{{asset('/storage/styles/remarkable.css')}}">
+
 
 
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script> -->
@@ -69,7 +71,7 @@
 
                 <li class="sidebar-list-item">
                     <ul class="sidebar-menu list-unstyled">
-                        <li class="sidebar-list-item"><a routerLink="./remarkables" class="sidebar-link text-dark"><i class="fad fa-fire-alt me-3 text-gray"></i><span>Chương trình hot</span></a></li>
+                        <li class="sidebar-list-item"><a href="/admin/remarkables" class="sidebar-link text-dark"><i class="fad fa-fire-alt me-3 text-gray"></i><span>Chương trình hot</span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-list-item">
@@ -77,7 +79,7 @@
 
                         <li class="sidebar-list-item"><a  href="/admin/films" class="sidebar-link text-dark"><i class="fas fa-film me-3 text-gray"></i><span>Quản Lý
                                     Phim</span></a></li>
-                        <li class="sidebar-list-item"><a href="javascript:;" routerLink="./screenings" class="sidebar-link text-dark"><i class="fas fa-calendar-week me-3 text-gray"></i><span>Quản
+                        <li class="sidebar-list-item"><a href="/admin/screenings" class="sidebar-link text-dark"><i class="fas fa-calendar-week me-3 text-gray"></i><span>Quản
                                     Lý Lịch
                                     Chiếu</span></a></li>
                         <li class="sidebar-list-item"><a (click)="goToMember()" href="javascript:;" class="sidebar-link text-dark"><i class="fas fa-user-friends me-3 text-gray"></i><span>Quản
@@ -89,14 +91,16 @@
                         <!-- <li class="sidebar-list-item"><a (click)="goToAds()" href="javascript:;" class="sidebar-link text-dark"><i class="fad fa-ad me-3 text-gray"></i><span>Quảng
                                 cáo</span></a></li> -->
 
-                        <li class="sidebar-list-item"><a routerLink="./rooms" href="javascript:;" class="sidebar-link text-dark"><i class="fab fa-windows me-3 text-gray"></i><span>Quản Lý
+                        <li class="sidebar-list-item"><a href="/admin/rooms" class="sidebar-link text-dark"><i class="fab fa-windows me-3 text-gray"></i><span>Quản Lý
                                     Phòng chiếu</span></a></li>
                         <li class="sidebar-list-item"><a routerLink="./revenues" href="javascript:;" class="sidebar-link text-dark"><i class="fas fa-film me-3 text-gray"></i><span>Doanh thu</span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-list-item"><a (click)="goToTicket()" href="javascript:;" class="sidebar-link text-dark"><i class="fas fa-ticket-alt me-3 text-gray"></i><span>Quản Lý
                             Vé</span></a></li>
-                <li class="sidebar-list-item"><a routerLink="./combos" href="javascript:;" class="sidebar-link text-dark"><i class="fad fa-popcorn me-3 text-gray"></i><span>Quản lý Sản phẩm</span></a></li>
+                <li class="sidebar-list-item"><a  href="/admin/combos" class="sidebar-link text-dark"><i class="fad fa-popcorn me-3 text-gray"></i><span>Quản lý Sản phẩm</span></a></li>
+                <li class="sidebar-list-item"><a  href="/admin/discounts" class="sidebar-link text-dark"><i class="fad fa-popcorn me-3 text-gray"></i><span>Quản lý Ưu đãi</span></a></li>
+
                 <!-- <li class="sidebar-list-item"><a (click)="goToSeat()" href="javascript:;" class="sidebar-link text-dark"><i
                         class="fas fa-couch me-3 text-gray"></i><span>Quản Lý Ghế</span></a></li> -->
             </ul>

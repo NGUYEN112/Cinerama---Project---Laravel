@@ -11,9 +11,24 @@ class ScreeningsEloquentRepository implements ScreeningsRepository {
         return Screening::all();
     }
 
+    public function getAllOfCinema($cinema_id)
+    {
+        return Screening::where('cinema_id',$cinema_id)->get();
+    }
+
     public function get($id)
     {
         return Screening::findOrFail($id);
+    }
+    public function getDate($cinema_id, $film_id)
+    {
+        return Screening::where('cinema_id',$cinema_id)->where('film_id',$film_id)->get();
+    }
+
+    public function getTime($cinema_id, $film_id, $date)
+    {
+        return Screening::where('cinema_id',$cinema_id)->where('film_id',$film_id)->where('date',$date)->get();
+
     }
 
     public function create($attributes)
